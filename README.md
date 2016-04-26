@@ -5,6 +5,13 @@ There are two ways you can us this work.
 2. Do marginal inference on nodes, when some of the nodes are observed
 3. Do Expectation Maximization on the Conditional Probability Distribution when one node is hidden.
 
+Node Names: 
+1. G -> Grade of a Student 
+2. D -> Difficulty of the course 
+3. I -> Intelligence of the Student
+4. S -> SAT score of the Student
+5. R -> Nature of Recommendation Letter
+
 
 The graph implemented for Case 1, and Case 2:
 

@@ -30,34 +30,32 @@ class Graph:
         for factor_node in self.factors:
             factor_node.reset_node()
 
-    def sum_product_inference(self, maxsteps=500):
-        """ This is the algorithm!
-            Each timestep:
-            take incoming messages and multiply together to produce outgoing for all nodes
-            then push outgoing to neighbors' incoming
-        """
+    def graph_inference(self,opn='sum-product',maxsteps=500):
+        '''
+            This is the algorithm for max-sum inference/ sum-product inference
+        '''
         # loop to convergence
         timestep = 0
         while timestep < maxsteps:
             timestep = timestep + 1
-            #print(timestep)
 
             for f in self.factors:
                 # start with factor-to-variable
-                f.prepare_outgoing_msgs()
+                f.prepare_outgoing_msgs(opn)
                 f.send_messages()
 
             for k, v in self.vars.iteritems():
                 # variable-to-factor
-                v.prepare_outgoing_msgs()
+                v.prepare_outgoing_msgs(opn)
                 v.send_messages()
+
 
     def compute_all_marginals(self, maxsteps=500):
         """ Return dictionary of all marginal distributions
             indexed by corresponding variable name
         """
         # Message pass
-        self.sum_product_inference(maxsteps)
+        self.graph_inference('sum-product', maxsteps)
 
         self.marginals = {}
         # for each var
@@ -70,9 +68,15 @@ class Graph:
             # normalize the marginal
             n = np.sum(vmarg)
             vmarg = vmarg / n
-            
+
             self.marginals[k] = vmarg
 
 
     def get_all_marginals(self):
         return self.marginals
+
+    def compute_best_assignment(self):
+        pass
+
+    def get_best_assignment(self):
+        pass

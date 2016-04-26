@@ -57,18 +57,23 @@ class VarNode(Node):
 
         for i in range(0, len(self.outgoing_msgs)):
             self.outgoing_msgs[i] = np.zeros((self.dim,1))
-            self.outgoing_msgs[i][self.observed] = 1.
+            self.outgoing_msgs[i][int(self.observed)] = 1.
 
         self.nextStep()
 
-    def prepare_outgoing_msgs(self):
+    def prepare_outgoing_msgs(self, opn='sum-product'):
         if self.observed < 0 and len(self.neighbors) > 1:
             self.nextStep()
 
             for i in range(0, len(self.incoming_msgs)):
                 all_incoming = self.incoming_msgs[:]
                 del all_incoming[i] # deletes incoming message from current neighbor
-                self.outgoing_msgs[i] = reduce(np.multiply, all_incoming)
+                if opn == 'sum-product':
+                    self.outgoing_msgs[i] = reduce(np.multiply, all_incoming)
+                elif opn == 'max-sum':
+                    self.outgoing_msgs[i] = reduce(np.sum, all_incoming)
+                else:
+                    print 'Invalid reduce type for prepare outgoing msgs for variable'
 
             self.normalize_outgoing_msgs()
 
@@ -112,7 +117,7 @@ class FactorNode(Node):
             self.outgoing_msgs[i] = np.ones((self.neighbors[i].dim,1))
             self.older_outgoing_msgs[i] = np.ones((self.neighbors[i].dim,1))
 
-    def prepare_outgoing_msgs(self):
+    def prepare_outgoing_msgs(self,opn='sum-product'):
         '''
             prepare outgoing message by doing sum product on the incoming msg
         '''
@@ -139,10 +144,20 @@ class FactorNode(Node):
         for i in range(0, num_incoming):
             all_incoming = self.incoming_msgs[:]
             del all_incoming[i] # remove message from the one to whom to sending
-            product_incoming = reduce(np.multiply,all_incoming, self.conditional_prob)
-            product_incoming = np.rollaxis(product_incoming, i, 0)
-            sum_product_incoming = np.sum(product_incoming, tuple(range(1, num_incoming)))
-            self.outgoing_msgs[i] = sum_product_incoming
+            if opn == 'sum-product':
+                product_incoming = reduce(np.multiply,all_incoming, self.conditional_prob)
+                product_incoming = np.rollaxis(product_incoming, i, 0)
+                sum_product_incoming = np.sum(product_incoming, tuple(range(1, num_incoming)))
+                sum_product_incoming.shape = (sum_product_incoming.shape[0],1)
+                self.outgoing_msgs[i] = sum_product_incoming
+            elif opn == 'max-sum':
+                sum_incoming = reduce(np.sum,all_incoming, np.log(self.conditional_prob))
+                sum_incoming = np.rollaxis(sum_incoming, i, 0)
+                max_sum_incoming = np.max(sum_incoming, tuple(range(1, num_incoming)))
+                max_sum_incoming.shape = (max_sum_incoming.shape[0],1)
+                self.outgoing_msgs[i] = max_sum_incoming
+            else:
+                print 'Invalid reduce type for prepare outgoing msgs for factor'
 
         # normalize outgoing messages
         self.normalize_outgoing_msgs()

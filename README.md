@@ -14,6 +14,7 @@ The graph implemented for Case 1, and Case 2:
 The graph implemented for Case 3:
 
 ![Graph for EM](https://github.com/harpribot/Belief-Prop/blob/master/images/graph_EM.jpg)
+
 The grey node is the hidden node, the yellow nodes are observable.
 
 ## Data (Virtual)

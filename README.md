@@ -7,10 +7,10 @@ There are two ways you can us this work.
 
 
 The graph implemented for Case 1, and Case 2:
-![Graph for marginal inference](http://postimg.org/image/xe3gaor5t/)
+![Graph for marginal inference](https://raw.githubusercontent.com/harpribot/Belief-Prop/master/images/grapj_marginal.jpg)
 
 The graph implemented for Case 3:
-![Graph for EM](http://postimg.org/image/9hmzx1wg1/)
+![Graph for EM](https://raw.githubusercontent.com/harpribot/Belief-Prop/master/images/grapj_EM.jpg)
 The grey node is the hidden node, the yellow nodes are observable.
 
 ## Data (Virtual)

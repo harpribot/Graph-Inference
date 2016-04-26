@@ -6,6 +6,7 @@ There are two ways you can us this work.
 3. Do Expectation Maximization on the Conditional Probability Distribution when one node is hidden.
 
 Node Names: 
+
 1. G -> Grade of a Student 
 2. D -> Difficulty of the course 
 3. I -> Intelligence of the Student

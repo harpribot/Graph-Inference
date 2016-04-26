@@ -1,6 +1,7 @@
 # Expectation Maximization on Graph
 
-There are two ways you can us this work.
+There are three ways you can us this work.
+
 1. Do marginal inference on nodes, when none of the nodes is observed
 2. Do marginal inference on nodes, when some of the nodes are observed
 3. Do Expectation Maximization on the Conditional Probability Distribution when one node is hidden.
